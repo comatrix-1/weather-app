@@ -29,13 +29,17 @@ const SearchHistoryItem: React.FC<{ location: string; date: string }> = ({
   };
   return (
     <Card className="flex items-center justify-between mt-2.5 p-3 rounded-xl">
-      <span>{location}</span>
+      <div>
+        <span className="sr-only">Location:</span>
+        <span>{location}</span>
+      </div>
       <div className="flex gap-2 items-center text-gray-500 dark:text-gray-400">
         <span className="text-sm">{date}</span>
         <Button
           variant="outline"
           size="icon"
           onClick={() => handleSearch(location)}
+          aria-label={`Search weather for ${location}`}
         >
           <FaSearch size={16} />
         </Button>
@@ -43,6 +47,7 @@ const SearchHistoryItem: React.FC<{ location: string; date: string }> = ({
           variant="outline"
           size="icon"
           onClick={() => removeSearchHistory(location)}
+          aria-label={`Remove ${location} from search history`}
         >
           <FaTrash size={16} />
         </Button>
@@ -50,6 +55,7 @@ const SearchHistoryItem: React.FC<{ location: string; date: string }> = ({
     </Card>
   );
 };
+
 const WeatherCard: React.FC = () => {
   const data = useWeatherStore((state) => state.weatherData);
   const searchHistory = useSearchHistoryStore((state) => state.searchHistory);
@@ -66,13 +72,13 @@ const WeatherCard: React.FC = () => {
       {["rain", "clouds"].includes(data.weather[0].main.toLowerCase()) ? (
         <img
           src="/weather-app/assets/cloud.png"
-          alt="Cloud"
+          alt="Cloudy weather"
           className="w-48 absolute top-0 right-0 -mt-24"
         />
       ) : (
         <img
           src="/weather-app/assets/sun.png"
-          alt="Sun"
+          alt="Sunny weather"
           className="w-48 absolute top-0 right-0 -mt-24"
         />
       )}
