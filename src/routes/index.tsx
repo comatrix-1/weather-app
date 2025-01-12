@@ -28,7 +28,7 @@ const Home: React.FC = () => {
     <div
       className="min-h-screen bg-cover bg-center"
       style={{
-        backgroundImage: `url(assets/${
+        backgroundImage: `url(/weather-app/assets/${
           effectiveTheme === "light" ? "bg-light.png" : "bg-dark.png"
         })`,
       }}

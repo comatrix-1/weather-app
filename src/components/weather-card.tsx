@@ -65,13 +65,13 @@ const WeatherCard: React.FC = () => {
     <Card className="p-8 rounded-3xl w-5/6 max-w-xl relative mt-24 border border-white/20">
       {["rain", "clouds"].includes(data.weather[0].main.toLowerCase()) ? (
         <img
-          src="/assets/cloud.png"
+          src="/weather-app/assets/cloud.png"
           alt="Cloud"
           className="w-48 absolute top-0 right-0 -mt-24"
         />
       ) : (
         <img
-          src="/assets/sun.png"
+          src="/weather-app/assets/sun.png"
           alt="Sun"
           className="w-48 absolute top-0 right-0 -mt-24"
         />
