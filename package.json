@@ -6,12 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "lint": "eslint .",
-    "test": "jest",
-    "test:w": "jest --watchAll",
-    "test:cov": "jest --coverage",
-    "preview": "vite preview",
-    "deploy": "npm run build && git subtree push --prefix dist origin gh-pages"
+    "lint": "eslint ."
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
