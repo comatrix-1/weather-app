@@ -51,6 +51,7 @@ const SearchForm: React.FC = () => {
             value={location}
             onChange={(e) => setLocation(e.target.value)}
             className="p-6 peer"
+            aria-describedby="location-helper"
           />
           <label
             htmlFor="inputField"
@@ -58,13 +59,25 @@ const SearchForm: React.FC = () => {
           >
             Country
           </label>
+          <p id="location-helper" className="sr-only">
+            Enter the name of the city or country to search for weather data.
+          </p>
         </div>
-        <Button type="submit" className="p-6 rounded-xl" disabled={loading}>
+        <Button
+          type="submit"
+          className="p-6 rounded-xl"
+          disabled={loading}
+          aria-label={loading ? "Loading" : "Search"}
+        >
           {loading ? <Loader2 className="animate-spin" /> : <FaSearch />}
         </Button>
       </form>
       {errorMessage && (
-        <div className="text-center text-sm dark:text-white bg-red-600/50 text-white rounded-xl py-2 px-4">
+        <div
+          className="text-center text-sm dark:text-white bg-red-600/50 text-white rounded-xl py-2 px-4"
+          role="alert"
+          aria-live="assertive"
+        >
           {errorMessage}
         </div>
       )}
