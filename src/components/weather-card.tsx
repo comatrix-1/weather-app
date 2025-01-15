@@ -28,17 +28,18 @@ const SearchHistoryItem: React.FC<{ location: string; date: string }> = ({
     }
   };
   return (
-    <Card className="flex items-center justify-between mt-2.5 p-3 rounded-xl">
-      <div>
+    <Card className="flex flex-wrap md:flex-nowrap items-center justify-between mt-2.5 p-3 rounded-xl gap-2">
+      <div className="grow">
         <span className="sr-only">Location:</span>
         <span>{location}</span>
       </div>
-      <div className="flex gap-2 items-center text-gray-500 dark:text-gray-400">
+      <div className="flex grow justify-end gap-2 items-center text-gray-500 dark:text-gray-400 ">
         <span className="text-sm">{date}</span>
         <Button
           variant="outline"
           size="icon"
           onClick={() => handleSearch(location)}
+          className="p-4"
           aria-label={`Search weather for ${location}`}
         >
           <FaSearch size={16} />
@@ -47,6 +48,7 @@ const SearchHistoryItem: React.FC<{ location: string; date: string }> = ({
           variant="outline"
           size="icon"
           onClick={() => removeSearchHistory(location)}
+          className="p-4"
           aria-label={`Remove ${location} from search history`}
         >
           <FaTrash size={16} />
@@ -68,7 +70,7 @@ const WeatherCard: React.FC = () => {
     );
 
   return (
-    <Card className="p-8 rounded-3xl w-5/6 max-w-xl relative mt-24 border border-white/20">
+    <Card className="px-4 py-6 md:p-8 rounded-3xl w-5/6 max-w-xl relative mt-24 border border-white/20 w-full">
       {["rain", "clouds"].includes(data.weather[0].main.toLowerCase()) ? (
         <img
           src="/weather-app/assets/cloud.png"
@@ -101,7 +103,7 @@ const WeatherCard: React.FC = () => {
           <p>Humidity: {data.main.humidity}%</p> <p>{data.weather[0].main}</p>
         </div>
       </div>
-      <Card className="mt-5 p-5 rounded-3xl">
+      <Card className="mt-5 p-4 md:p-5 rounded-3xl">
         <h4 className="mb-4">Search History</h4>
         {!searchHistory.length ? (
           <p className="text-center text-sm text-gray-700 dark:text-gray-300">
