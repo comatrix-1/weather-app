@@ -1,17 +1,21 @@
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useRef, useState } from "react";
 import { Loader2 } from "lucide-react";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useSearchHistoryStore } from "@/store/searchHistoryStore";
 import { convertTimestamp } from "@/lib/utils";
 import { useWeatherStore } from "@/store/weatherStore";
 import { fetchWeatherData } from "@/services/weatherService";
 import { FaSearch } from "react-icons/fa";
+import { Input } from "@/components/ui/input";
+import { cities } from "@/data/openweather-cities";
 
 const SearchForm: React.FC = () => {
   const [location, setLocation] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const inputRef = useRef<HTMLInputElement | null>(null);
   const addSearchHistory = useSearchHistoryStore(
     (state) => state.addSearchHistory
   );
@@ -38,6 +42,22 @@ const SearchForm: React.FC = () => {
     }
   };
 
+  const handleFocus = () => setIsDropdownOpen(true);
+  const handleBlur = () => {
+    // Delay closing to allow for click on dropdown options
+    setTimeout(() => setIsDropdownOpen(false), 150);
+  };
+
+  const handleSelectCity = (city: string) => {
+    setLocation(city);
+    setIsDropdownOpen(false);
+    inputRef.current?.focus(); // Refocus on the input after selection
+  };
+
+  const filteredCities = cities
+    .filter((city) => city.toLowerCase().includes(location.toLowerCase()))
+    .map((city) => ({ label: city, value: city }));
+
   return (
     <div className="w-full max-w-md mx-auto">
       <form
@@ -46,13 +66,29 @@ const SearchForm: React.FC = () => {
       >
         <div className="relative w-full">
           <Input
-            id="inputField"
-            placeholder="Enter a city or country"
+            ref={inputRef}
+            placeholder="Enter a city"
             value={location}
             onChange={(e) => setLocation(e.target.value)}
-            className="p-6 peer"
-            aria-describedby="location-helper"
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            className="w-full p-6 peer"
           />
+          {isDropdownOpen &&
+            filteredCities.length > 0 &&
+            filteredCities.length !== cities.length && (
+              <div className="absolute z-10 mt-1 w-full bg-violet-100/80 dark:bg-violet-900/80 dark:text-white rounded-xl shadow-lg max-h-48 overflow-y-auto">
+                {filteredCities.map((city) => (
+                  <div
+                    key={city.value}
+                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer rounded-xl"
+                    onMouseDown={() => handleSelectCity(city.value)}
+                  >
+                    {city.value}
+                  </div>
+                ))}
+              </div>
+            )}
           <label
             htmlFor="inputField"
             className="absolute left-5 top-2 -translate-y-1/2 text-gray-600 dark:text-gray-400 text-xs px-1 block peer-placeholder-shown:hidden"
